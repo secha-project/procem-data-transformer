@@ -1,0 +1,26 @@
+{
+    "files.watcherExclude": {
+        "**/target": true
+    },
+    "cSpell.words": [
+        "cran",
+        "dbnavigator",
+        "ensime",
+        "fulltests",
+        "htmlcov",
+        "ionide",
+        "jvmopts",
+        "lucene",
+        "mima",
+        "mpeltonen",
+        "pydevproject",
+        "replstate",
+        "Rplots",
+        "Rproj",
+        "scalac",
+        "secha",
+        "sparkr",
+        "thriftserver",
+        "Xlint"
+    ]
+}
