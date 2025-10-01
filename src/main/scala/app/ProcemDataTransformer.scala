@@ -25,6 +25,9 @@ object ProcemDataTransformer extends App {
     val outputPathBase: String = args(2)
     val metadataPathBase: String = args(3)
 
+    val checkTable: Boolean = System.getenv("CHECK_DELTA_TABLE") == "true"
+    val fullRowCount: Boolean = System.getenv("VERBOSE_ROW_COUNT") == "true"
+
 
     val spark : SparkSession= SparkSession
         .builder()
@@ -85,7 +88,7 @@ object ProcemDataTransformer extends App {
         }
 
         // If the table does not exist, create it with the new data
-        if (!tableExists || !oldDataExists) {
+        if (!oldDataExists || (checkTable && !tableExists)) {
             println(s"${logPrefix}- Creating table ${tableName} (old table: ${tableExists}, old data: ${oldDataExists})")
             deviceData
                 .write
@@ -112,14 +115,11 @@ object ProcemDataTransformer extends App {
                 .execute()
         }
 
-        // Optimize the table
-        // deltaTable
-        //     .optimize()
-        //     .executeCompaction()
-
 
         println(s"${logPrefix}- ${deviceData.count()} data rows stored for device ${deviceName}")
-        // println(s"${logPrefix}  - ${deltaTable.toDF.count()} data rows in total for device ${deviceName}")
+        if (fullRowCount) {
+            println(s"${logPrefix}  - ${deltaTable.toDF.count()} data rows in total for device ${deviceName}")
+        }
     }
 
 
